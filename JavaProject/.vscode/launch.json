@@ -1,0 +1,29 @@
+{
+    // 使用 IntelliSense 以得知可用的屬性。
+    // 暫留以檢視現有屬性的描述。
+    // 如需詳細資訊，請瀏覽: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CreateToken",
+            "request": "launch",
+            "mainClass": "com.example.service.CreateToken",
+            "projectName": "JavaProject_d3ddcb45"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.example.App",
+            "projectName": "JavaProject_d3ddcb45",
+            "vmArgs": "--module-path \"C:/Users/Addmin/Desktop/javafx-sdk-21.0.6/lib\" --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        }
+    ]
+}

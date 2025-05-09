@@ -1,0 +1,58 @@
+@font-face {
+    font-family: 'LXGW WenKai Mono TC';
+    src: url("/resources/images/LXGWWenKaiMonoTC-Regular.ttf");
+}
+
+.root{
+    -fx-background-color: #212121;
+}
+
+.text{
+    -fx-font-family: 'LXGW WenKai Mono TC';
+}
+
+#movieName{
+    -fx-font-family: 'LXGW WenKai Mono TC';
+    -fx-font-size: 23;
+}
+
+#movieTag{
+    -fx-font-family: 'LXGW WenKai Mono TC';
+    -fx-font-size: 20;
+}
+
+#functionText{
+    -fx-font-family: 'LXGW WenKai Mono TC';
+    -fx-font-size: 35;
+}
+
+#yesnoText{
+    -fx-font-family: 'LXGW WenKai Mono TC';
+    -fx-font-size: 40;
+}
+
+#confirmMessage{
+    -fx-font-family: 'LXGW WenKai Mono TC';
+    -fx-font-size: 50;
+}
+
+.button{
+    -fx-cursor: hand;
+}
+
+#Button{
+    -fx-background-color: #212121;
+}
+
+#Button:hover{
+    -fx-cursor: hand;
+}
+
+#textButton{
+    -fx-background-color: #212121;
+}
+
+#textButton:hover{
+    -fx-background-color: #757575;
+    -fx-cursor: hand;
+}
