@@ -49,8 +49,8 @@ public class Favorite implements Initializable {
     @FXML
     private SVGPath starSVGPath1, starSVGPath2, starSVGPath3, starSVGPath4, starSVGPath5, starSVGPath6;
 
-    private String fullStar = "M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z";
-    private String emptyStar = "M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z";
+    private String fullStar = "M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z";
+    private String emptyStar = "M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z";
     private String movieID1, movieID2, movieID3, movieID4, movieID5, movieID6;
     private String[] movieIDs = {movieID1, movieID2, movieID3, movieID4, movieID5, movieID6};
     private String movieID = "";
@@ -70,6 +70,7 @@ public class Favorite implements Initializable {
         ImageView[] movieImages = {movieImage1, movieImage2, movieImage3, movieImage4, movieImage5, movieImage6};
         Button[] starButtons = {starButton1, starButton2, starButton3, starButton4, starButton5, starButton6};
         SVGPath[] starSVGPaths = {starSVGPath1, starSVGPath2, starSVGPath3, starSVGPath4, starSVGPath5, starSVGPath6};
+        Button[] movieButtons = {movieButton1, movieButton2, movieButton3, movieButton4, movieButton5, movieButton6};
         
         ArrayList<Movie> favoriteMovies = Service.listFavorite();
         for (int i = 0; i < Math.min(favoriteMovies.size(), 6); i++) {
@@ -85,7 +86,9 @@ public class Favorite implements Initializable {
             Image img = new Image(favoriteMovies.get(i).getPosterPath());
             movieImages[i].setImage(img);
 
-            movieIDs[i] = favoriteMovies.get(i).getID();
+            movieIDs[i] = Integer.toString(favoriteMovies.get(i).getID());
+            starSVGPaths[i].setContent(fullStar);
+            movieButtons[i].setDisable(false);
         }
         for (int i = favoriteMovies.size(); i < 6; i++) {
             movieNames[i].setText("");
@@ -99,6 +102,7 @@ public class Favorite implements Initializable {
 
             starButtons[i].setStyle("-fx-background-color: #212121;");
             starSVGPaths[i].setContent("");
+            movieButtons[i].setDisable(true);
         }
     }
     
@@ -261,21 +265,61 @@ public class Favorite implements Initializable {
     }
 
     public void starButtonOnAction(ActionEvent event) throws IOException{
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Loading loading = new Loading(stage);
+        loading.show();
+
         String starButtonId = ((Button)event.getSource()).getId();
         SVGPath svgPath;
-        if(starButtonId.equals("starButton1")) svgPath = starSVGPath1;
-        else if(starButtonId.equals("starButton2")) svgPath = starSVGPath2;
-        else if(starButtonId.equals("starButton3")) svgPath = starSVGPath3;
-        else if(starButtonId.equals("starButton4")) svgPath = starSVGPath4;
-        else if(starButtonId.equals("starButton5")) svgPath = starSVGPath5;
-        else svgPath = starSVGPath6;
-
-        if(svgPath.getContent() == fullStar){
-            svgPath.setContent(emptyStar);
+        String movieID;
+        if(starButtonId.equals("starButton1")){
+            svgPath = starSVGPath1;
+            movieID = movieIDs[0];
+        }
+        else if(starButtonId.equals("starButton2")){
+            svgPath = starSVGPath2;
+            movieID = movieIDs[1];
+        }
+        else if(starButtonId.equals("starButton3")){
+            svgPath = starSVGPath3;
+            movieID = movieIDs[2];
+        }
+        else if(starButtonId.equals("starButton4")){
+            svgPath = starSVGPath4;
+            movieID = movieIDs[3];
+        }
+        else if(starButtonId.equals("starButton5")){
+            svgPath = starSVGPath5;
+            movieID = movieIDs[4];
         }
         else{
-            svgPath.setContent(fullStar);
+            svgPath = starSVGPath6;
+            movieID = movieIDs[5];
         }
+
+        Boolean currentIsEmptyStar = svgPath.getContent().equals(emptyStar);
+
+        new Thread(() -> {
+            try{
+                if(currentIsEmptyStar){
+                    Service.addFavorite(movieID);
+                }
+                else{
+                    Service.removeFavorite(movieID);
+                }
+
+                Platform.runLater(() -> {
+                    svgPath.setContent(currentIsEmptyStar? fullStar : emptyStar);
+                    loading.closeStage();
+                });
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                Platform.runLater(() -> {
+                    loading.closeStage();
+                });
+            }
+        }).start();
     }
 
     public void setUserName(String userName){

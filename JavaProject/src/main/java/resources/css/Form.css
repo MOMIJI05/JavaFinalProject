@@ -24,6 +24,7 @@
 }
 
 .button:hover{
+    -fx-background-color: #82bae7;
     -fx-cursor: hand;
 }
 

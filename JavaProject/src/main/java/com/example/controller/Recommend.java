@@ -2,6 +2,9 @@ package com.example.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import org.json.JSONException;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +15,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import com.example.service.Service;
+import com.example.service.Movie;
 import javafx.stage.Stage;
 import resources.images.Loading;
 
@@ -28,7 +36,7 @@ public class Recommend {
     private CheckBox westernCheckBox, musicCheckBox;
 
     @FXML
-    private Button submitButton,  accountButton;
+    private Button submitButton,  accountButton, refreshButton;
     @FXML
     private Label recommendMessageLabel;
 
@@ -48,40 +56,107 @@ public class Recommend {
     private Label movieTag5_1, movieTag5_2, movieTag5_3;
     @FXML
     private Label movieTag6_1, movieTag6_2, movieTag6_3;
+    @FXML
+    private ImageView movieImage1, movieImage2, movieImage3, movieImage4, movieImage5, movieImage6;
 
+    private String movieID1, movieID2, movieID3, movieID4, movieID5, movieID6;
+    private String[] movieIDs = {movieID1, movieID2, movieID3, movieID4, movieID5, movieID6};
+    private String movieID = "";
 
-    public void submitButtonOnAction(ActionEvent event){
-        ArrayList<String> genres = new ArrayList<>();
+    public void submitButtonOnAction(ActionEvent event) throws IOException{
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        if(adventureCheckBox.isSelected())   genres.add("Adventure");
-        if(dramaCheckBox.isSelected())       genres.add("Drama");
-        if(actionCheckBox.isSelected())      genres.add("Action");
-        if(animationCheckBox.isSelected())   genres.add("Animation");
-        if(historyCheckBox.isSelected())     genres.add("History");
-        if(comedyCheckBox.isSelected())      genres.add("Comedy");
-        if(fantasyCheckBox.isSelected())     genres.add("Fantasy");
-        if(familyCheckBox.isSelected())      genres.add("Family");
-        if(horrorCheckBox.isSelected())      genres.add("Horror");
-        if(mysteryCheckBox.isSelected())     genres.add("Mystery");
-        if(thrillerCheckBox.isSelected())    genres.add("Thriller");
-        if(warCheckBox.isSelected())         genres.add("War");
-        if(romanceCheckBox.isSelected())     genres.add("Romance");
-        if(crimeCheckBox.isSelected())       genres.add("Crime");
-        if(tvmovieCheckBox.isSelected())     genres.add("Tvmovie");
-        if(scifiCheckBox.isSelected())       genres.add("Scifi");
-        if(documentaryCheckBox.isSelected()) genres.add("Documentary");
-        if(westernCheckBox.isSelected())     genres.add("Western");
-        if(musicCheckBox.isSelected())       genres.add("Music");
+        ArrayList<String> genres = new ArrayList<String>();
+        //ArrayList<Movie> recommendMovies = new ArrayList<Movie>();
+        Label[] movieNames = {movieName1, movieName2, movieName3, movieName4, movieName5, movieName6};
+        Label[][] movieTags = {{movieTag1_1, movieTag1_2, movieTag1_3},
+                                {movieTag2_1, movieTag2_2, movieTag2_3},
+                                {movieTag3_1, movieTag3_2, movieTag3_3},
+                                {movieTag4_1, movieTag4_2, movieTag4_3},
+                                {movieTag5_1, movieTag5_2, movieTag5_3},
+                                {movieTag6_1, movieTag6_2, movieTag6_3}};
+        ImageView[] movieImages = {movieImage1, movieImage2, movieImage3, movieImage4, movieImage5, movieImage6};
+        Button[] movieButtons = {movieButton1, movieButton2, movieButton3, movieButton4, movieButton5, movieButton6};
+
+        if(adventureCheckBox.isSelected())   genres.add("12");
+        if(dramaCheckBox.isSelected())       genres.add("18");
+        if(actionCheckBox.isSelected())      genres.add("28");
+        if(animationCheckBox.isSelected())   genres.add("16");
+        if(historyCheckBox.isSelected())     genres.add("36");
+        if(comedyCheckBox.isSelected())      genres.add("35");
+        if(fantasyCheckBox.isSelected())     genres.add("14");
+        if(familyCheckBox.isSelected())      genres.add("10751");
+        if(horrorCheckBox.isSelected())      genres.add("27");
+        if(mysteryCheckBox.isSelected())     genres.add("9648");
+        if(thrillerCheckBox.isSelected())    genres.add("53");
+        if(warCheckBox.isSelected())         genres.add("10752");
+        if(romanceCheckBox.isSelected())     genres.add("10749");
+        if(crimeCheckBox.isSelected())       genres.add("80");
+        if(tvmovieCheckBox.isSelected())     genres.add("10770");
+        if(scifiCheckBox.isSelected())       genres.add("878");
+        if(documentaryCheckBox.isSelected()) genres.add("99");
+        if(westernCheckBox.isSelected())     genres.add("37");
+        if(musicCheckBox.isSelected())       genres.add("10402");
 
         if(genres.size() == 0){
             recommendMessageLabel.setText("請至少選擇1個類型");
             return;
         }
-        
-        recommendMessageLabel.setText("");
-        for(int i = 0 ; i < genres.size() ; i++){
-            System.out.println(genres.get(i));
-        }
+
+        Loading loading = new Loading(stage);
+        loading.show();
+
+        new Thread(() -> {
+            try{
+                ArrayList<Movie> recommendMovies100 = Service.recommendWithGenres(genres);
+
+                Platform.runLater(() -> {
+                    int total_size = recommendMovies100.size();
+                    ArrayList<Movie> recommendMovies = new ArrayList<Movie>();
+                    while(recommendMovies.size() <= 6){
+                        int randomNum = (int)(Math.random() * (total_size - 1));
+                        if(!recommendMovies.contains(recommendMovies100.get(randomNum))){
+                            recommendMovies.add(recommendMovies100.get(randomNum));
+                        }
+                    }
+                    for(int i = 0 ; i < Math.min(recommendMovies.size(), 6) ; i++){
+                        movieNames[i].setText(recommendMovies.get(i).getTitle());
+
+                        for(int j = 0 ; j < Math.min(recommendMovies.get(i).getGenres().size(), 3) ; j++){
+                            movieTags[i][j].setText(recommendMovies.get(i).getGenres().get(j));
+                        }
+                        for(int j = recommendMovies.get(i).getGenres().size() ; j < 3 ; j++){
+                            movieTags[i][j].setText("");
+                        }
+
+                        Image img = new Image(recommendMovies.get(i).getPosterPath());
+                        movieImages[i].setImage(img);
+
+                        movieIDs[i] = Integer.toString(recommendMovies.get(i).getID());
+                        movieButtons[i].setDisable(false);
+                    }
+                    for(int i = recommendMovies.size() ; i < 6 ; i++){
+                        movieNames[i].setText("");
+                        for(int j = 0 ; j < 3 ; j++){
+                            movieTags[i][j].setText("");
+                        }
+                        movieImages[i].setImage(new Image("file:/resources/images/empty.jpg"));
+                        movieIDs[i] = "";
+                        movieButtons[i].setDisable(true);
+                    }
+
+                    recommendMessageLabel.setText("");
+
+                    loading.closeStage();
+                });
+            }
+            catch (JSONException e){
+                System.err.println("JSON exception: " + e);
+            }
+            catch (IOException e){
+                System.err.println("IO exception: " + e);
+            }
+        }).start();
     }
 
     public void accountButtonOnAction(ActionEvent event) throws IOException{
@@ -93,15 +168,7 @@ public class Recommend {
 
             new Thread(() -> {
                 try{
-                    FXMLLoader favoriteLoader = new FXMLLoader(getClass().getResource("/resources/fxml/Favorite.fxml"));
-                    Parent root = favoriteLoader.load();
-                    Favorite favoriteController = favoriteLoader.getController();
-                    favoriteController.loadFavoriteMovies();
-
-                    Scene favoriteScene = new Scene(root);
-                    String favoriteCSS = this.getClass().getResource("/resources/css/Favorite.css").toExternalForm();
-                    favoriteScene.getStylesheets().add(favoriteCSS);
-
+                    Scene favoriteScene = SceneManager.switchScene("favorite", stage);
                     Platform.runLater(() -> {
                         stage.setScene(favoriteScene);
                         loading.closeStage();
@@ -115,19 +182,14 @@ public class Recommend {
     }
 
     public void movieButtonOnAction(ActionEvent event) throws IOException{
-        String movieButtonId = ((Button)event.getSource()).getId();
-        Label movieLabel;
-        String movieName;
-        if(movieButtonId.equals("movieButton1")) movieLabel = movieName1;
-        else if(movieButtonId.equals("movieButton2")) movieLabel = movieName2;
-        else if(movieButtonId.equals("movieButton3")) movieLabel = movieName3;
-        else if(movieButtonId.equals("movieNutton4")) movieLabel = movieName4;
-        else if(movieButtonId.equals("movieNutton4")) movieLabel = movieName5;
-        else movieLabel = movieName6;
-
-        movieName = movieLabel.getText();
-
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        if(event.getSource() == movieButton1) movieID = movieIDs[0];
+        else if(event.getSource() == movieButton2) movieID = movieIDs[1];
+        else if(event.getSource() == movieButton3) movieID = movieIDs[2];
+        else if(event.getSource() == movieButton4) movieID = movieIDs[3];
+        else if(event.getSource() == movieButton5) movieID = movieIDs[4];
+        else if(event.getSource() == movieButton6) movieID = movieIDs[5];
 
         Platform.runLater(() -> {
             Loading loading = new Loading(stage);
@@ -139,8 +201,7 @@ public class Recommend {
                     Parent root = introductionLoader.load();
                     Introduction introductionController = introductionLoader.getController();
 
-                    ///要改，ID沒放
-                    introductionController.setMovieID("505");
+                    introductionController.setMovieID(movieID);
                     introductionController.loadMovie();
 
                     Scene introductionScene = new Scene(root);

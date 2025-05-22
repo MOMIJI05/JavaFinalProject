@@ -16,9 +16,25 @@
     -fx-font-size: 40;
 }
 
-#hyperlink{
+#Scipt{
+    -fx-font-size: 25;
+}
+
+.hyperlink{
     -fx-font-family: 'Cactus Classical Serif';
+    -fx-text-fill: #4682b4;
     -fx-font-size: 30;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.hyperlink:hover{
+    -fx-text-fill: #82bae7;
+    -fx-cursor: hand;
+}
+
+.hyperlink:visited {
+    -fx-text-fill: #d67e78;
 }
 
 .label{

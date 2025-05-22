@@ -6,20 +6,18 @@ import java.util.List;
 public class Movie {
     private String title;
     private String posterPath;
-    private String ID;
+    private int ID;
     private String link;
     private String overview;
     private ArrayList<String> genres;
-    private Boolean star;
 
-    public Movie(String title, String posterPath, String ID, String link, String overview, ArrayList<String> genres, Boolean star){
+    public Movie(String title, String posterPath, int ID, String link, String overview, ArrayList<String> genres){
         this.title = title;
         this.posterPath = posterPath;
         this.ID = ID;
         this.link = link;
         this.overview = overview;
         this.genres = genres;
-        this.star = star;
     }
 
     public String getTitle() {
@@ -30,7 +28,7 @@ public class Movie {
         return posterPath;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
@@ -46,7 +44,12 @@ public class Movie {
         return genres;
     }
 
-    public Boolean getStar() {
-        return star;
+    public void setDetail(String title, String posterPath, int ID, String link, String overview, ArrayList<String> genres){
+        this.title = title;
+        this.posterPath = posterPath;
+        this.ID = ID;
+        this.link = link;
+        this.overview = overview;
+        this.genres = genres;
     }
 }

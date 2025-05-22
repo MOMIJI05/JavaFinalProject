@@ -34,6 +34,9 @@ public class Login{
     private PasswordField passwordTextField;
 
     //private String salt = "javaproject505";
+    public Login(){
+        
+    }
 
     public void loginButtonOnAction(ActionEvent event) throws IOException, Exception{
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -61,6 +64,8 @@ public class Login{
                     Parent root = recommendLoader.load();
                     Recommend recommendController = recommendLoader.getController();
                     recommendController.setUserName(userName);
+                    Service.getSession();
+                    // Service.getAccountID();
 
                     Scene recommendScene = new Scene(root);
                     String recommendCSS = this.getClass().getResource("/resources/css/Recommend.css").toExternalForm();
@@ -121,7 +126,6 @@ public class Login{
     }
 
     public boolean vaildLogin(String userName, String originPassword) throws IOException{
-
         // String saltedPassword = salt + originPassword;
         // System.out.println("Origin password adding salt: " + saltedPassword);
         // System.out.println("Hashed password: " + hash(saltedPassword));
