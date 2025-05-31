@@ -8,6 +8,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
@@ -63,7 +64,7 @@
       </Button>
       <Button fx:id="refreshButton" layoutX="281.0" layoutY="38.0" onAction="#submitButtonOnAction" maxHeight="66" maxWidth="66" minHeight="66" minWidth="66" prefHeight="66" prefWidth="66" style="-fx-background-color: #212121;">
          <graphic>
-            <Group scaleX="0.09" scaleY="0.09">
+            <Group scaleX="0.08" scaleY="0.08">
                   <SVGPath content="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z" fill="WHITE" />
             </Group>
          </graphic>
@@ -79,9 +80,7 @@
          </graphic>
       </Button>
       <Label fx:id="movieName1" id="movieName" layoutX="305.0" layoutY="385.0" text="愛麗絲夢遊仙境" textFill="WHITE" maxWidth="250"/>
-      <Label fx:id="movieTag1_1" id="movieTag" layoutX="310.0" layoutY="415.0" text="#動畫" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag1_2" id="movieTag" layoutX="390.0" layoutY="415.0" text="#奇幻" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag1_3" id="movieTag" layoutX="470.0" layoutY="415.0" text="#冒險" textFill="WHITE" maxWidth="100"/>
+      <HBox  fx:id="movieTagBox1" layoutX="310.0" layoutY="415.0"  prefWidth="250" spacing="20" />
       <Button fx:id="movieButton2" layoutX="575.0" layoutY="131.0" mnemonicParsing="false" onAction="#movieButtonOnAction" prefHeight="247.0" prefWidth="163.0" style="-fx-background-color: #212121;">
          <graphic>
             <ImageView fx:id="movieImage2" fitHeight="541.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
@@ -92,9 +91,7 @@
          </graphic>
       </Button>
       <Label fx:id="movieName2" id="movieName" layoutX="580.0" layoutY="385.0" text="愛麗絲夢遊仙境" textFill="WHITE" maxWidth="250"/>
-      <Label fx:id="movieTag2_1" id="movieTag" layoutX="585.0" layoutY="415.0" text="#動畫" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag2_2" id="movieTag" layoutX="665.0" layoutY="415.0" text="#奇幻" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag2_3" id="movieTag" layoutX="745.0" layoutY="415.0" text="#冒險" textFill="WHITE" maxWidth="100"/>
+      <HBox  fx:id="movieTagBox2" layoutX="585.0" layoutY="415.0"  prefWidth="250" spacing="20" />
       <Button fx:id="movieButton3" layoutX="850.0" layoutY="131.0" mnemonicParsing="false" onAction="#movieButtonOnAction" prefHeight="247.0" prefWidth="163.0" style="-fx-background-color: #212121;">
          <graphic>
             <ImageView fx:id="movieImage3" fitHeight="516.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
@@ -105,9 +102,7 @@
          </graphic>
       </Button>
       <Label fx:id="movieName3" id="movieName" layoutX="855.0" layoutY="385.0" text="愛麗絲夢遊仙境" textFill="WHITE" maxWidth="250"/>
-      <Label fx:id="movieTag3_1" id="movieTag" layoutX="860.0" layoutY="415.0" text="#動畫" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag3_2" id="movieTag" layoutX="940.0" layoutY="415.0" text="#奇幻" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag3_3" id="movieTag" layoutX="1020.0" layoutY="415.0" text="#冒險" textFill="WHITE" maxWidth="100"/>
+      <HBox  fx:id="movieTagBox3" layoutX="860.0" layoutY="415.0"  prefWidth="250" spacing="20" />
       <Button fx:id="movieButton4" layoutX="299.0" layoutY="446.0" mnemonicParsing="false" onAction="#movieButtonOnAction" prefHeight="247.0" prefWidth="163.0" style="-fx-background-color: #212121;">
          <graphic>
             <ImageView fx:id="movieImage4" fitHeight="266.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
@@ -118,10 +113,7 @@
          </graphic>
       </Button>
       <Label fx:id="movieName4" id="movieName" layoutX="305.0" layoutY="700.0" text="愛麗絲夢遊仙境" textFill="WHITE" maxWidth="250"/>
-      <Label fx:id="movieTag4_1" id="movieTag" layoutX="310.0" layoutY="730.0" text="#動畫" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag4_2" id="movieTag" layoutX="390.0" layoutY="730.0" text="#奇幻" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag4_3" id="movieTag" layoutX="470.0" layoutY="730.0" text="#冒險" textFill="WHITE" maxWidth="100"/>
-      <Button fx:id="movieButton5" layoutX="575.0" layoutY="446.0" mnemonicParsing="false" onAction="#movieButtonOnAction" prefHeight="247.0" prefWidth="163.0" style="-fx-background-color: #212121;">
+      <HBox  fx:id="movieTagBox4" layoutX="310.0" layoutY="730.0"  prefWidth="250" spacing="20" /><Button fx:id="movieButton5" layoutX="575.0" layoutY="446.0" mnemonicParsing="false" onAction="#movieButtonOnAction" prefHeight="247.0" prefWidth="163.0" style="-fx-background-color: #212121;">
          <graphic>
             <ImageView fx:id="movieImage5" fitHeight="541.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -131,9 +123,7 @@
          </graphic>
       </Button>
       <Label fx:id="movieName5" id="movieName" layoutX="580.0" layoutY="700.0" text="愛麗絲夢遊仙境" textFill="WHITE" maxWidth="250"/>
-      <Label fx:id="movieTag5_1" id="movieTag" layoutX="585.0" layoutY="730.0" text="#動畫" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag5_2" id="movieTag" layoutX="665.0" layoutY="730.0" text="#奇幻" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag5_3" id="movieTag" layoutX="745.0" layoutY="730.0" text="#冒險" textFill="WHITE" maxWidth="100"/>
+      <HBox  fx:id="movieTagBox5" layoutX="585.0" layoutY="730.0"  prefWidth="250" spacing="20" />
       <Button fx:id="movieButton6" layoutX="850.0" layoutY="446.0" mnemonicParsing="false" onAction="#movieButtonOnAction" prefHeight="247.0" prefWidth="163.0" style="-fx-background-color: #212121;">
          <graphic>
             <ImageView fx:id="movieImage6" fitHeight="516.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
@@ -144,8 +134,6 @@
          </graphic>
       </Button>
       <Label fx:id="movieName6" id="movieName" layoutX="855.0" layoutY="700.0" text="愛麗絲夢遊仙境" textFill="WHITE" maxWidth="250"/>
-      <Label fx:id="movieTag6_1" id="movieTag" layoutX="860.0" layoutY="730.0" text="#動畫" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag6_2" id="movieTag" layoutX="940.0" layoutY="730.0" text="#奇幻" textFill="WHITE" maxWidth="100"/>
-      <Label fx:id="movieTag6_3" id="movieTag" layoutX="1020.0" layoutY="730.0" text="#冒險" textFill="WHITE" maxWidth="100"/>
+      <HBox  fx:id="movieTagBox6" layoutX="860.0" layoutY="730.0"  prefWidth="250" spacing="20" />   
    </children>
 </AnchorPane>

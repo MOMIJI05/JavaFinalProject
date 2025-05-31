@@ -19,7 +19,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import com.example.service.Service;
 
-public class Login{
+public class Login {
     private String userName;
 
     @FXML
@@ -33,13 +33,13 @@ public class Login{
     @FXML
     private PasswordField passwordTextField;
 
-    //private String salt = "javaproject505";
-    public Login(){
-        
+    // private String salt = "javaproject505";
+    public Login() {
+
     }
 
-    public void loginButtonOnAction(ActionEvent event) throws IOException, Exception{
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    public void loginButtonOnAction(ActionEvent event) throws IOException, Exception {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         if (usernameTextField.getText().isBlank() == true || passwordTextField.getText().isBlank() == true) {
             loginMessageLabel.setText("請輸入帳號和密碼以登入");
@@ -59,13 +59,14 @@ public class Login{
             loading.show();
 
             new Thread(() -> {
-                try{
-                    FXMLLoader recommendLoader = new FXMLLoader(getClass().getResource("/resources/fxml/Recommend.fxml"));
+                try {
+                    FXMLLoader recommendLoader = new FXMLLoader(
+                            getClass().getResource("/resources/fxml/Recommend.fxml"));
                     Parent root = recommendLoader.load();
                     Recommend recommendController = recommendLoader.getController();
                     recommendController.setUserName(userName);
                     Service.getSession();
-                    // Service.getAccountID();
+                    recommendController.loadMovie();
 
                     Scene recommendScene = new Scene(root);
                     String recommendCSS = this.getClass().getResource("/resources/css/Recommend.css").toExternalForm();
@@ -76,17 +77,17 @@ public class Login{
                         loading.closeStage();
                     });
                 }
-                catch (Exception e){
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }).start();
         });
     }
 
-    public void signupButtonOnAction(ActionEvent event) throws IOException{
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    public void signupButtonOnAction(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        if (usernameTextField.getText().isBlank() == true || passwordTextField.getText().isBlank() == true){
+        if (usernameTextField.getText().isBlank() == true || passwordTextField.getText().isBlank() == true) {
             loginMessageLabel.setText("請輸入帳號和密碼以註冊");
             return;
         }
@@ -103,7 +104,7 @@ public class Login{
             loading.show();
 
             new Thread(() -> {
-                try{
+                try {
                     FXMLLoader formLoader = new FXMLLoader(getClass().getResource("/resources/fxml/Form.fxml"));
                     Parent root = formLoader.load();
                     Form formController = formLoader.getController();
@@ -117,7 +118,7 @@ public class Login{
                         loading.closeStage();
                     });
                 }
-                catch (Exception e){
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }).start();
@@ -125,7 +126,7 @@ public class Login{
 
     }
 
-    public boolean vaildLogin(String userName, String originPassword) throws IOException{
+    public boolean vaildLogin(String userName, String originPassword) throws IOException {
         // String saltedPassword = salt + originPassword;
         // System.out.println("Origin password adding salt: " + saltedPassword);
         // System.out.println("Hashed password: " + hash(saltedPassword));
@@ -133,7 +134,7 @@ public class Login{
         return Service.vaildLogin(userName, originPassword);
     }
 
-    public boolean vaildSignup(String userName, String originPassword){
+    public boolean vaildSignup(String userName, String originPassword) {
         // String saltedPassword = salt + originPassword;
         // System.out.println("User name: " + userName);
         // System.out.println("Origin password adding salt: " + saltedPassword);
@@ -141,19 +142,19 @@ public class Login{
         return true;
     }
 
-    public String hash(String originPassWord){
-        try{
+    public String hash(String originPassWord) {
+        try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] messageDigest = md.digest(originPassWord.getBytes());
 
             BigInteger no = new BigInteger(1, messageDigest);
             String hashedPassword = no.toString(16);
-            while(hashedPassword.length() < 64){
+            while (hashedPassword.length() < 64) {
                 hashedPassword = "0" + hashedPassword;
             }
             return hashedPassword;
         }
-        catch (NoSuchAlgorithmException e){
+        catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }

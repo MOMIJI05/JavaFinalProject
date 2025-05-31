@@ -2,6 +2,8 @@ package com.example.controller;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,12 +12,15 @@ import javafx.stage.Stage;
 import resources.images.Loading;
 
 public class SceneManager {
-    public static Scene switchScene(String type, Stage stage) throws IOException{
-        if(type == "favorite"){
+    public static Scene switchScene(String type, Stage stage) throws IOException {
+        if (type == "favorite") {
             FXMLLoader favoriteLoader = new FXMLLoader(SceneManager.class.getResource("/resources/fxml/Favorite.fxml"));
             Parent root = favoriteLoader.load();
             Favorite favoriteController = favoriteLoader.getController();
-            favoriteController.loadFavoriteMovies();
+            int movieCount = favoriteController.loadFavoriteMovies();
+            if (movieCount == 0) {
+                JOptionPane.showMessageDialog(null, "你目前沒有收藏任何電影！", "Message", JOptionPane.INFORMATION_MESSAGE);
+            }
 
             Scene favoriteScene = new Scene(root);
             String favoriteCSS = SceneManager.class.getResource("/resources/css/Favorite.css").toExternalForm();
@@ -23,8 +28,9 @@ public class SceneManager {
 
             return favoriteScene;
         }
-        else{
-            Scene favoriteScene = new Scene(new FXMLLoader(SceneManager.class.getResource("/resources/fxml/Favorite.fxml")).load());
+        else {
+            Scene favoriteScene = new Scene(
+                    new FXMLLoader(SceneManager.class.getResource("/resources/fxml/Favorite.fxml")).load());
             return favoriteScene;
         }
     }

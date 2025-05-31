@@ -8,19 +8,44 @@
     src: url("/resources/images/CactusClassicalSerif-Regular.ttf");
 }
 
-.root{
+.root {
     -fx-background-color: #212121;
 }
 
-#movieName{
+#movieName {
     -fx-font-size: 40;
 }
 
-#Scipt{
+#Scipt {
     -fx-font-size: 25;
 }
 
-.hyperlink{
+#comment {
+    -fx-font-family: 'Cactus Classical Serif';
+    -fx-text-fill: #4682b4;
+    -fx-font-size: 18;
+}
+
+#line {
+    -fx-font-family: 'Cactus Classical Serif';
+    -fx-text-fill: #f9f9f9;
+    -fx-font-size: 18;
+}
+
+.titledpane {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #4682b4;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.titledpane:hover {
+    -fx-background-color: #82bae7;
+    -fx-border-color: #e8f0fe;
+}
+
+.hyperlink {
     -fx-font-family: 'Cactus Classical Serif';
     -fx-text-fill: #4682b4;
     -fx-font-size: 30;
@@ -28,7 +53,7 @@
     -fx-faint-focus-color: transparent;
 }
 
-.hyperlink:hover{
+.hyperlink:hover {
     -fx-text-fill: #82bae7;
     -fx-cursor: hand;
 }
@@ -37,20 +62,21 @@
     -fx-text-fill: #d67e78;
 }
 
-.label{
+.label {
     -fx-font-family: 'LXGW WenKai Mono TC';
     -fx-font-size: 30;
 }
 
-.button{
+.button {
     -fx-background-color: #4682b4;
     -fx-font-size: 23;
 }
 
-.button:hover{
+.button:hover {
+    -fx-background-color: #82bae7;
     -fx-cursor: hand;
 }
 
-.button:pressed{
+.button:pressed {
     -fx-background-color: #d67e78;
 }

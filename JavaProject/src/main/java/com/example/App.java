@@ -15,9 +15,9 @@ public class App extends Application {
             Scene loginScene = new Scene(loginLoader.load());
             String loginCSS = this.getClass().getResource("/resources/css/Login.css").toExternalForm();
             loginScene.getStylesheets().add(loginCSS);
-            
+
             ////////////////////////////////////////////////////////////
-            
+
             Image icon = new Image("/resources/images/stackOverflowIcon.png");
 
             primaryStage.setTitle("自動化電影推薦");
@@ -26,8 +26,9 @@ public class App extends Application {
             primaryStage.setWidth(1280);
             primaryStage.setHeight(800);
             primaryStage.show();
-            
-        } catch (Exception e) {
+
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
