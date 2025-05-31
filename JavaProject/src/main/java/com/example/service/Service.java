@@ -250,6 +250,39 @@ public class Service {
         return favorieMovies;
     }
 
+    public static ArrayList<String> getFavoriteGenres() throws UnknownHostException, IOException {
+        Map<String, Integer> genreMap = new HashMap<>();
+        genreMap.put("#動作", 28);
+        genreMap.put("#冒險", 12);
+        genreMap.put("#動畫", 16);
+        genreMap.put("#喜劇", 35);
+        genreMap.put("#犯罪", 80);
+        genreMap.put("#紀錄", 99);
+        genreMap.put("#劇情", 18);
+        genreMap.put("#家庭", 10751);
+        genreMap.put("#奇幻", 14);
+        genreMap.put("#歷史", 36);
+        genreMap.put("#恐怖", 27);
+        genreMap.put("#音樂", 10402);
+        genreMap.put("#懸疑", 9648);
+        genreMap.put("#浪漫", 10749);
+        genreMap.put("#科幻", 878);
+        genreMap.put("#電視電影", 10770);
+        genreMap.put("#驚悚", 53);
+        genreMap.put("#戰爭", 10752);
+        genreMap.put("#西部", 37);
+        ArrayList<String> genres = new ArrayList<String>();
+        ArrayList<Movie> movies = listFavorite();
+
+        for (int i = 0; i < movies.size(); i++) {
+            for (int j = 0; j < movies.get(i).getGenres().size(); j++) {
+                genres.add(Integer.toString(genreMap.getOrDefault(movies.get(i).getGenres().get(j), 0)));
+            }
+        }
+
+        return genres;
+    }
+
     public static Movie getMovieDetail(String movieID) throws IOException, UnknownHostException {
         Map<Integer, String> genreMap = new HashMap<>();
         genreMap.put(28, "#動作");
@@ -660,6 +693,51 @@ public class Service {
         }
 
         return comments;
+    }
+
+    public static ArrayList<Movie> getUpComing() throws IOException {
+        ArrayList<Movie> movies = new ArrayList<Movie>();
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder().url("https://api.themoviedb.org/3/movie/upcoming?language=zh-TW&page=1")
+                .get().addHeader("accept", "application/json")
+                .addHeader("Authorization",
+                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMzRkNDMxNjIyYTFlMmJjYzFkYWM5NGRhMjc4OWVlMCIsIm5iZiI6MTc0NjYyMTE5OC42MjMwMDAxLCJzdWIiOiI2ODFiNTMwZTgxOGFjNTQ1ODI1YWYzNmUiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.KaiFev6_YspC7Sr_Zr6BBAGR4hbm4el2umlq4C4itUo")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject jsonObject = new JSONObject(responseBody);
+
+                JSONArray results = jsonObject.getJSONArray("results");
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject movieObj = results.getJSONObject(i);
+                    String title = movieObj.getString("title");
+                    String posterPathCheck = movieObj.optString("poster_path");
+                    if (posterPathCheck == null | posterPathCheck.equals("null")) {
+                        continue;
+                    }
+                    String posterPath = "https://image.tmdb.org/t/p/w440_and_h660_face" + posterPathCheck;
+                    int id = movieObj.getInt("id");
+                    String link = "https://www.themoviedb.org/movie/" + id;
+                    String overview = movieObj.getString("overview");
+
+                    JSONArray genresJSONArray = movieObj.getJSONArray("genre_ids");
+                    ArrayList<String> movie_genres = new ArrayList<>();
+                    for (int j = 0; j < genresJSONArray.length(); j++) {
+                        String genre = Integer.toString(genresJSONArray.getInt(j));
+                        movie_genres.add(genre);
+                    }
+
+                    Movie movie = new Movie(title, posterPath, id, link, overview, movie_genres);
+                    movies.add(movie);
+                }
+            }
+        }
+
+        return movies;
     }
 
     public static void downloadPoster(String movieID) throws IOException, URISyntaxException, FileNotFoundException {

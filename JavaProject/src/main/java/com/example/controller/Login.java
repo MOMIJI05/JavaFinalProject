@@ -17,6 +17,10 @@ import javafx.fxml.FXMLLoader;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+
+import com.example.service.Movie;
+import com.example.service.PopupMessageBuilder;
 import com.example.service.Service;
 
 public class Login {
@@ -71,6 +75,24 @@ public class Login {
                     Scene recommendScene = new Scene(root);
                     String recommendCSS = this.getClass().getResource("/resources/css/Recommend.css").toExternalForm();
                     recommendScene.getStylesheets().add(recommendCSS);
+
+                    ArrayList<String> genres = Service.getFavoriteGenres();
+                    ArrayList<Movie> upcomingMovies = Service.getUpComing();
+                    ArrayList<Movie> interestingUpcomingMovies = new ArrayList<Movie>();
+                    for (int i = 0; i < upcomingMovies.size(); i++) {
+                        for (int j = 0; j < upcomingMovies.get(i).getGenres().size(); j++) {
+                            if (genres.contains(upcomingMovies.get(i).getGenres().get(j))) {
+                                interestingUpcomingMovies.add(upcomingMovies.get(i));
+                                System.out.println(upcomingMovies.get(i).getTitle());
+                                break;
+                            }
+                        }
+                    }
+
+                    if (interestingUpcomingMovies.size() != 0) {
+                        int index = (int) (Math.random() * interestingUpcomingMovies.size());
+                        PopupMessageBuilder.showNotification(interestingUpcomingMovies.get(index).getTitle());
+                    }
 
                     Platform.runLater(() -> {
                         stage.setScene(recommendScene);

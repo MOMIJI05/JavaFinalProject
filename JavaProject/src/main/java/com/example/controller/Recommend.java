@@ -24,6 +24,8 @@ import javafx.scene.paint.Color;
 
 import com.example.service.Service;
 import com.example.service.Movie;
+import com.example.service.PopupMessageBuilder;
+
 import javafx.stage.Stage;
 import resources.images.Loading;
 
