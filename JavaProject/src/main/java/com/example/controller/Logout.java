@@ -13,8 +13,6 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import resources.images.Loading;
 
-import javax.swing.JOptionPane;
-
 public class Logout {
     @FXML
     private Button favoriteButton;
@@ -102,7 +100,7 @@ public class Logout {
                             getClass().getResource("/resources/fxml/Recommend.fxml"));
                     Parent root = recommendLoader.load();
                     Recommend recommendController = recommendLoader.getController();
-                    // recommendController.setUserName(userName);
+                    recommendController.loadMovie();
 
                     Scene recommendScene = new Scene(root);
                     String recommendCSS = this.getClass().getResource("/resources/css/Recommend.css").toExternalForm();

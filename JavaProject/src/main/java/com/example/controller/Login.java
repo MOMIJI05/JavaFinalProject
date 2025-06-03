@@ -18,7 +18,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-
 import com.example.service.Movie;
 import com.example.service.PopupMessageBuilder;
 import com.example.service.Service;
@@ -38,9 +37,6 @@ public class Login {
     private PasswordField passwordTextField;
 
     // private String salt = "javaproject505";
-    public Login() {
-
-    }
 
     public void loginButtonOnAction(ActionEvent event) throws IOException, Exception {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

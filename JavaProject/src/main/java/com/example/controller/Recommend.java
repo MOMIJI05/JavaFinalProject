@@ -2,11 +2,7 @@ package com.example.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-
 import org.json.JSONException;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -21,10 +18,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-
 import com.example.service.Service;
 import com.example.service.Movie;
-import com.example.service.PopupMessageBuilder;
 
 import javafx.stage.Stage;
 import resources.images.Loading;
@@ -64,7 +59,6 @@ public class Recommend {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         ArrayList<String> genres = new ArrayList<String>();
-        // ArrayList<Movie> recommendMovies = new ArrayList<Movie>();
         Label[] movieNames = { movieName1, movieName2, movieName3, movieName4, movieName5, movieName6 };
         HBox[] movieTagBoxs = { movieTagBox1, movieTagBox2, movieTagBox3, movieTagBox4, movieTagBox5, movieTagBox6 };
         ImageView[] movieImages = { movieImage1, movieImage2, movieImage3, movieImage4, movieImage5, movieImage6 };
@@ -122,8 +116,6 @@ public class Recommend {
                 ArrayList<Movie> recommendMovies100 = Service.recommendWithGenres(genres);
                 int total_size = recommendMovies100.size();
                 if (total_size == 0) {
-                    JOptionPane.showMessageDialog(null, "所查詢的類型無資料，請更改條件後再試一次！", "Message",
-                            JOptionPane.INFORMATION_MESSAGE);
                     throw new IndexOutOfBoundsException();
                 }
 
@@ -185,7 +177,14 @@ public class Recommend {
             }
             catch (IndexOutOfBoundsException e) {
                 System.err.println("Index Out Of Bounds Exception!! " + e);
-                loading.closeStage();
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("通知");
+                    alert.setHeaderText(null);
+                    alert.setContentText("所查詢的類型無資料，請更改條件後再試一次！");
+                    alert.showAndWait();
+                    loading.closeStage();
+                });
             }
         }).start();
     }
@@ -199,10 +198,24 @@ public class Recommend {
 
             new Thread(() -> {
                 try {
-                    Scene favoriteScene = SceneManager.switchScene("favorite", stage);
+                    FXMLLoader favoriteLoader = new FXMLLoader(getClass().getResource("/resources/fxml/Favorite.fxml"));
+                    Parent root = favoriteLoader.load();
+                    Favorite favoriteController = favoriteLoader.getController();
+                    int movieCount = favoriteController.loadFavoriteMovies();
+
+                    Scene favoriteScene = new Scene(root);
+                    String favoriteCSS = getClass().getResource("/resources/css/Favorite.css").toExternalForm();
+                    favoriteScene.getStylesheets().add(favoriteCSS);
                     Platform.runLater(() -> {
                         stage.setScene(favoriteScene);
                         loading.closeStage();
+                        if (movieCount == 0) {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("通知");
+                            alert.setHeaderText(null);
+                            alert.setContentText("你目前沒有收藏任何電影！");
+                            alert.showAndWait();
+                        }
                     });
                 }
                 catch (Exception e) {

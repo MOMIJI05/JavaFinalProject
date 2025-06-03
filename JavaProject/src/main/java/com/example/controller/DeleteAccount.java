@@ -2,9 +2,6 @@ package com.example.controller;
 
 import java.io.IOException;
 import java.util.Optional;
-
-import javax.swing.JOptionPane;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -104,7 +101,7 @@ public class DeleteAccount {
                             getClass().getResource("/resources/fxml/Recommend.fxml"));
                     Parent root = recommendLoader.load();
                     Recommend recommendController = recommendLoader.getController();
-                    // recommendController.setUserName(userName);
+                    recommendController.loadMovie();
 
                     Scene recommendScene = new Scene(root);
                     String recommendCSS = this.getClass().getResource("/resources/css/Recommend.css").toExternalForm();

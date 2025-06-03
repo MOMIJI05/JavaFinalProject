@@ -5,8 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -272,7 +270,13 @@ public class Service {
         genreMap.put("#戰爭", 10752);
         genreMap.put("#西部", 37);
         ArrayList<String> genres = new ArrayList<String>();
-        ArrayList<Movie> movies = listFavorite();
+        ArrayList<Movie> movies = new ArrayList<Movie>();
+        try {
+            movies = listFavorite();
+        }
+        catch (UnknownHostException e) {
+            System.err.println("Unknown Host Exception!! " + e);
+        }
 
         for (int i = 0; i < movies.size(); i++) {
             for (int j = 0; j < movies.get(i).getGenres().size(); j++) {
@@ -315,7 +319,6 @@ public class Service {
                 String responseBody = response.body().string();
                 JSONObject jsonObject = new JSONObject(responseBody);
 
-                // System.out.println(responseBody);
                 String title = jsonObject.getString("title");
 
                 ArrayList<String> genres = new ArrayList<String>();
@@ -565,7 +568,6 @@ public class Service {
         }
 
         if (Movies.size() == 0) {
-            // recommendWithTop
             Movies = recommendWithTop();
         }
         return Movies;

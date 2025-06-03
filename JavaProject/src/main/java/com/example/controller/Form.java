@@ -34,23 +34,24 @@ public class Form {
     @FXML
     private Label submitMessageLabel;
 
-    public void submitButtonOnAction(ActionEvent event) throws IOException{
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    public void submitButtonOnAction(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        if(vaildSubmit()){
+        if (vaildSubmit()) {
             Platform.runLater(() -> {
                 Loading loading = new Loading(stage);
                 loading.show();
 
                 new Thread(() -> {
-                    try{
-                        FXMLLoader recommendLoader = new FXMLLoader(getClass().getResource("/resources/fxml/Recommend.fxml"));
+                    try {
+                        FXMLLoader recommendLoader = new FXMLLoader(
+                                getClass().getResource("/resources/fxml/Recommend.fxml"));
                         Parent root = recommendLoader.load();
                         Recommend recommendController = recommendLoader.getController();
-                        //recommendController.setUserName(userName);
 
                         Scene recommendScene = new Scene(root);
-                        String recommendCSS = this.getClass().getResource("/resources/css/Recommend.css").toExternalForm();
+                        String recommendCSS = this.getClass().getResource("/resources/css/Recommend.css")
+                                .toExternalForm();
                         recommendScene.getStylesheets().add(recommendCSS);
 
                         Platform.runLater(() -> {
@@ -58,19 +59,19 @@ public class Form {
                             loading.closeStage();
                         });
                     }
-                    catch (Exception e){
+                    catch (Exception e) {
                         e.printStackTrace();
                     }
                 }).start();
             });
 
         }
-        else{
+        else {
             submitMessageLabel.setText("請至少選擇1個類型");
         }
     }
 
-    public boolean vaildSubmit(){
+    public boolean vaildSubmit() {
         return true;
     }
 
