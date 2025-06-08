@@ -1,8 +1,11 @@
 package com.example.controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
@@ -22,6 +25,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import resources.images.Loading;
 import com.example.service.Service;
@@ -45,6 +50,7 @@ public class Introduction {
     @FXML
     private FlowPane movieTagBox;
 
+    private String initialDownloadPath = System.getenv("USERPROFILE") + "\\Downloads"; // 預設的user下載位置
     private String fullStar = "M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z";
     private String emptyStar = "M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z";
     private String movieID = "";
@@ -162,25 +168,33 @@ public class Introduction {
 
     public void downloadButtonOnAction(ActionEvent event) throws IOException, URISyntaxException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        Movie movie = Service.getMovieDetail(movieID);
+        String dafaultFilename = movie.getTitle().replaceAll("[<>:\"/\\\\|?*]", "") + "_海報.jpg";
+
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("選擇下載路徑");
+        chooser.setInitialDirectory(new File(initialDownloadPath));
+        chooser.setInitialFileName(dafaultFilename);
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPEG Image (*.jpg)", "*.jpg"));
+
+        File path = chooser.showSaveDialog(stage);
+
         Loading loading = new Loading(stage);
         loading.show();
 
         new Thread(() -> {
             try {
-                Service.downloadPoster(movieID);
+
+                Service.downloadPoster(path.toString(), movie.getPosterPath());
 
                 Platform.runLater(() -> {
                     loading.closeStage();
                 });
             }
-            catch (FileNotFoundException e) {
-                System.err.println("File Not Found Exception!!" + e);
-            }
-            catch (IOException e) {
-                System.err.println("IO Exception!!" + e);
-            }
-            catch (URISyntaxException e) {
-                System.err.println("URI Syntax Exception!!" + e);
+            catch (Exception e) {
+                System.err.println(e);
+                loading.closeStage();
             }
         }).start();
     }

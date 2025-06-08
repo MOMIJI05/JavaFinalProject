@@ -738,17 +738,15 @@ public class Service {
         return movies;
     }
 
-    public static void downloadPoster(String movieID) throws IOException, URISyntaxException, FileNotFoundException {
-        Movie movie = getMovieDetail(movieID);
-        URL url = new URI("https://image.tmdb.org/t/p/w500_face" + movie.getPosterPath()).toURL();
-        String destinationPath = "C:\\Users\\Addmin\\Downloads\\" + movie.getTitle().replaceAll("[<>:\"/\\\\|?*]", "")
-                + "_海報.jpg";
+    public static void downloadPoster(String path, String posterPath)
+            throws IOException, URISyntaxException, FileNotFoundException {
+        URL url = new URI("https://image.tmdb.org/t/p/w500_face" + posterPath).toURL();
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(5000);
         conn.setReadTimeout(5000);
         conn.setRequestMethod("GET");
         if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            try (InputStream in = conn.getInputStream(); FileOutputStream out = new FileOutputStream(destinationPath)) {
+            try (InputStream in = conn.getInputStream(); FileOutputStream out = new FileOutputStream(path)) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = in.read(buffer)) != -1) {
